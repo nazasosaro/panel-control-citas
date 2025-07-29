@@ -185,12 +185,47 @@ watch(
 
 const sendConfirmationEmail = (appointment) => {
     // Simulación de envío de email
-    console.log('Correo enviado a profesional y cliente para la cita:', appointment)
+    const { patient, date } = appointment;
+
+    // Convertir la fecha a formato legible
+    const formattedDate = new Date(date).toLocaleDateString('es-AR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+
+    const formattedTime = new Date(date).toLocaleTimeString('es-AR', {
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+
+    alert(`Correo CONFIRMACIÓN de enviado a profesional y cliente para la cita:
+    - Paciente: ${patient}
+    - Fecha: ${formattedDate}
+    - Hora: ${formattedTime}`);
 }
 
 const sendCancellationEmail = (appointment) => {
     // Simulación de envío de email
-    console.log('Correo de CANCELACIÓN enviado a profesional y cliente para la cita:', JSON.parse(JSON.stringify(appointment)))
+    const { patient, date } = appointment;
+
+    const formattedDate = new Date(date).toLocaleDateString('es-AR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+
+    const formattedTime = new Date(date).toLocaleTimeString('es-AR', {
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+
+    alert(`Correo de CANCELACIÓN enviado a profesional y cliente:
+    - Paciente: ${patient}
+    - Fecha: ${formattedDate}
+    - Hora: ${formattedTime}`);
 }
 
 const addAppointment = (formData) => {
