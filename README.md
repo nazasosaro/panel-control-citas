@@ -20,22 +20,31 @@ Este proyecto es un panel de control para la gestión de citas de profesionales 
 ## Instalación y ejecución local
 
 Sigue los siguientes pasos para ejecutar el proyecto en tu entorno local:
+
 ```bash
 git clone https://github.com/nazasosaro/panel-control-citas.git
+```
 ```bash
 cd panel-control-citas
+```
 ```bash
 composer install
+```
 ```bash
 cp .env.example .env
+```
 ```bash
 php artisan key:generate
+```
 ```bash
 npm install
+```
 ```bash
 npm run dev
+```
 
-## Configura tu conexión a base de datos en el archivo .env y ejecuta las migraciones con:
+## Configura tu conexión a base de datos en el archivo `.env` y ejecuta las migraciones con:
 
 ```bash
 php artisan migrate
+```
