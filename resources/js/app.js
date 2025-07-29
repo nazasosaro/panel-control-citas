@@ -1,5 +1,3 @@
-import './bootstrap';
-
 import { createApp } from "vue";
 import AppointmentList from "./components/AppointmentList.vue";
 
