@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AppointmentConfirmationMail extends Mailable
+class AppointmentCancellationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -34,7 +34,7 @@ class AppointmentConfirmationMail extends Mailable
     {
         return new Envelope(
             from: 'no-reply@medicos.com',
-            subject: 'Confirmación de Cita',
+            subject: 'Cancelación de Cita',
         );
     }
 
@@ -44,7 +44,7 @@ class AppointmentConfirmationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.appointment-confirmation',
+            view: 'emails.appointment-cancellation',
         );
     }
 

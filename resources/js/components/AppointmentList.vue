@@ -100,7 +100,7 @@ const defaultAppointments = [
         id: 2,
         patient: 'María García',
         date: '2025-07-29T18:30:00Z',
-        status: 'Pendiente',
+        status: 'Confirmada',
     },
     {
         id: 3,
@@ -118,7 +118,7 @@ const defaultAppointments = [
         id: 5,
         patient: 'Carlos Méndez',
         date: '2025-08-03T09:30:00Z',
-        status: 'Pendiente',
+        status: 'Confirmada',
     },
     {
         id: 6,
@@ -136,7 +136,7 @@ const defaultAppointments = [
         id: 8,
         patient: 'Camila Ramírez',
         date: '2025-08-06T13:00:00Z',
-        status: 'Pendiente',
+        status: 'Confirmada',
     },
     {
         id: 9,
@@ -148,7 +148,7 @@ const defaultAppointments = [
         id: 10,
         patient: 'Valentina Ruiz',
         date: '2025-08-08T08:15:00Z',
-        status: 'Pendiente',
+        status: 'Confirmada',
     },
     {
         id: 11,
@@ -183,27 +183,27 @@ watch(
     { deep: true }
 )
 
-const sendCancellationEmail = (appointment) => {
-    // Simulación de envío de email
-    const { patient, date } = appointment;
+// const sendCancellationEmail = (appointment) => {
+//     // Simulación de envío de email
+//     const { patient, date } = appointment;
 
-    const formattedDate = new Date(date).toLocaleDateString('es-AR', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
+//     const formattedDate = new Date(date).toLocaleDateString('es-AR', {
+//         weekday: 'long',
+//         year: 'numeric',
+//         month: 'long',
+//         day: 'numeric',
+//     });
 
-    const formattedTime = new Date(date).toLocaleTimeString('es-AR', {
-        hour: '2-digit',
-        minute: '2-digit',
-    });
+//     const formattedTime = new Date(date).toLocaleTimeString('es-AR', {
+//         hour: '2-digit',
+//         minute: '2-digit',
+//     });
 
-    alert(`Correo de CANCELACIÓN enviado a profesional y cliente:
-    - Paciente: ${patient}
-    - Fecha: ${formattedDate}
-    - Hora: ${formattedTime}`);
-}
+//     alert(`Correo de CANCELACIÓN enviado a profesional y cliente:
+//     - Paciente: ${patient}
+//     - Fecha: ${formattedDate}
+//     - Hora: ${formattedTime}`);
+// }
 
 const addAppointment = async (formData) => {
     const { patient, date, time } = formData
@@ -246,7 +246,7 @@ const addAppointment = async (formData) => {
     }
 }
 
-const cancelAppointment = (id) => {
+const cancelAppointment = async (id) => {
     const appointment = appointments.value.find(appt => appt.id === id)
     if (!appointment) return
 
@@ -257,11 +257,27 @@ const cancelAppointment = (id) => {
     // Cambiar estado a "Cancelada"
     appointment.status = 'Cancelada'
 
-    // Eliminar de calendarios profesionales y cliente
+    // Eliminar de calendarios
     professionalCalendar.value = professionalCalendar.value.filter(appt => appt.id !== id)
     clientCalendar.value = clientCalendar.value.filter(appt => appt.id !== id)
 
-    sendCancellationEmail(appointment)
+    // Enviar correo desde Laravel
+    try {
+        await fetch('/api/appointments/cancel', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                patient: appointment.patient,
+                date: appointment.date,
+                time: appointment.time,
+            }),
+        })
+        alert('Correo de cancelación enviado')
+    } catch (err) {
+        console.error(err)
+        alert('Error al enviar correo de cancelación')
+    }
+
 }
 
 const sortedAppointments = computed(() =>
