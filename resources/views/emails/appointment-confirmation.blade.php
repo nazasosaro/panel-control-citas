@@ -2,10 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Confirmación de Cita</title>
+    <title>{{ $title }}</title>
 </head>
 <body>
-    <h1>Confirmación de Cita</h1>
+    <h1>{{ $title }}</h1>
     <p>{{ $content }}</p>
     {{-- <p>Hola {{ $appointment->patient_name }},</p>
     <p>Tu cita ha sido confirmada con el/la profesional {{ $appointment->professional_name }}.</p>
