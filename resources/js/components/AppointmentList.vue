@@ -228,49 +228,45 @@ const sendCancellationEmail = (appointment) => {
     - Hora: ${formattedTime}`);
 }
 
-const addAppointment = (formData) => {
-    const { patient, date, time, status } = formData
+const addAppointment = async (formData) => {
+    const { patient, date, time } = formData
 
-    // Validar que fecha y hora existan
-    if (!date || !time) {
-        alert('Por favor, selecciona fecha y hora válidas')
-        return
-    }
-
-    // Crear DateTime combinando fecha y hora en zona local
     const dateTime = DateTime.fromFormat(`${date} ${time}`, 'yyyy-MM-dd HH:mm')
+    if (!dateTime.isValid) return alert('Fecha u hora inválidas')
 
-    if (!dateTime.isValid) {
-        alert('Fecha u hora inválidas')
-        return
-    }
-
-    // Convertir a ISO UTC para guardar
     const combinedDateTime = dateTime.toUTC().toISO()
+    const isSlotTaken = appointments.value.some(appt => DateTime.fromISO(appt.date).toMillis() === dateTime.toMillis())
 
-    // Validar superposición comparando timestamps
-    const isSlotTaken = appointments.value.some(appt => {
-        const apptDateTime = DateTime.fromISO(appt.date)
-        return apptDateTime.toMillis() === dateTime.toMillis()
-    })
-
-    if (isSlotTaken) {
-        alert('La fecha y hora seleccionadas ya están ocupadas. Por favor, elige otro horario.')
-        return
-    }
+    if (isSlotTaken) return alert('Ese horario ya está ocupado')
 
     const newAppointment = {
         id: Date.now(),
         patient,
         date: combinedDateTime,
-        status: status || 'Confirmada',
+        status: 'Confirmada',
     }
 
+    // Guardar en el frontend
     appointments.value.push(newAppointment)
     professionalCalendar.value.push(newAppointment)
     clientCalendar.value.push(newAppointment)
 
-    sendConfirmationEmail(newAppointment)
+    // Enviar correo desde Laravel
+    try {
+        await fetch('/api/appointments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                patient,
+                date,
+                time,
+            }),
+        })
+        alert('Correo de confirmación enviado')
+    } catch (err) {
+        console.error(err)
+        alert('Error al enviar correo')
+    }
 }
 
 const cancelAppointment = (id) => {

@@ -11,7 +11,7 @@ Este proyecto es un panel de control para la gestión de citas de profesionales 
 - **Vue 3** + **Vite** (Composition API)
 - **JavaScript**
 - **Blade**
-- **Node.js** y **npm**
+- **Node.js 20.X** y **npm**
 - **MySQL** o **SQLite**
 - Opcional: **Laragon** / **XAMPP** / **WAMP** como entorno local
 
