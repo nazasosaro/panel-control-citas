@@ -183,28 +183,6 @@ watch(
     { deep: true }
 )
 
-// const sendCancellationEmail = (appointment) => {
-//     // Simulación de envío de email
-//     const { patient, date } = appointment;
-
-//     const formattedDate = new Date(date).toLocaleDateString('es-AR', {
-//         weekday: 'long',
-//         year: 'numeric',
-//         month: 'long',
-//         day: 'numeric',
-//     });
-
-//     const formattedTime = new Date(date).toLocaleTimeString('es-AR', {
-//         hour: '2-digit',
-//         minute: '2-digit',
-//     });
-
-//     alert(`Correo de CANCELACIÓN enviado a profesional y cliente:
-//     - Paciente: ${patient}
-//     - Fecha: ${formattedDate}
-//     - Hora: ${formattedTime}`);
-// }
-
 const addAppointment = async (formData) => {
     const { patient, date, time } = formData
 
