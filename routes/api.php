@@ -10,7 +10,6 @@ Route::post('/appointments', function (Request $request) {
         'patient' => 'required|string',
         'date' => 'required|date',
         'time' => 'required',
-        'email' => 'cliente@email.com',
     ]);
 
     $content = "Hola {$data['patient']}, tu cita ha sido confirmada para el día {$data['date']} a las {$data['time']}.";
